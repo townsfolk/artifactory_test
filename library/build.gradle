@@ -1,0 +1,4 @@
+apply from: "../build.gradle"
+
+archivesBaseName = "the-library"
+version = "11.1-SNAPSHOT"

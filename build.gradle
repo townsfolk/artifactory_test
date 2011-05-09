@@ -1,0 +1,29 @@
+apply plugin: "templates"
+apply plugin: "idea"
+apply plugin: "java"
+apply plugin: "maven"
+
+String baseRepoUrl = "http://local.example.com:8070/artifactory"
+group = "com.example"
+
+configurations { deployerJars }
+
+repositories {
+   // Adding local maven repository first.
+   mavenLocal()
+   // Adding chegg artifactory repo as a maven repository.
+   mavenRepo urls: ["${baseRepoUrl}/repo"]
+}
+
+dependencies {
+   // used to upload artifacts to artifactory.
+   deployerJars "org.apache.maven.wagon:wagon-http:1.0-beta-2"
+}
+
+uploadArchives {
+   repositories.mavenDeployer {
+      name = "local.repo"
+      configuration = configurations.deployerJars
+      repository url: "${baseRepoUrl}/internal"
+   }
+}
